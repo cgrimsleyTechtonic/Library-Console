@@ -1,6 +1,6 @@
 function Library(){
   this.bookShelf = new Array();
-};
+}
 
 //grabs fist full of hair
 
@@ -10,7 +10,7 @@ Library.prototype.addBook = function (book){
   var bookBool;
   function bookChk(b){
     return b === book;
-  };
+  }
   // not even sure if this results in a bool but it works
   bookBool = this.bookShelf.find(bookChk);
   // console.log("bookchck started");
@@ -56,7 +56,7 @@ Library.prototype.removeBookByAuthor = function (authorName){
       // console.log("rmvBbyAuth mini function ran on: " + authorName);
       return b.author === authorName;
     });
-  };
+  }
   // called auth fx for first time
   findAuth();
   // did the logic backwards on this, really more a style pref than anything.
@@ -80,7 +80,7 @@ Library.prototype.removeBookByAuthor = function (authorName){
 Library.prototype.getRandomBook = function (){
   function getRandomInt(max) {
     return Math.floor(Math.random() * Math.floor(max));
-  };
+  }
   var bookCnt = this.bookShelf.length;
   // console.log("book count: " + bookCnt);
   if (bookCnt > 1){
@@ -91,6 +91,8 @@ Library.prototype.getRandomBook = function (){
     return null;
   }
 };
+
+
 
 
 //retrun all books that completely or partially match the string title passed into the function (indexof or regexp would help here)
@@ -149,10 +151,10 @@ Library.prototype.getAuthors = function (){
   var i;
   for (i = 0; i < this.bookShelf.length; i++){
     var tempAuth = this.bookShelf[i].author;
-    if (!tempArray.some(function(a){return a === tempAuth})){
+    if (!tempArray.some(function(a){return a === tempAuth;})){
       tempArray.push(tempAuth);
     }
-  };
+  }
   return tempArray;
 };
 
@@ -172,6 +174,27 @@ Library.prototype.getRandomAuthorName = function (){
   }
 };
 
+// VVVVVVVVVVVVVVVVVVVVVVVVVVVVV helper stuffs VVVVVVVVVVVVVVVVVVVVVVVVVVVVV
+Library.prototype.store = function(){
+  var tempShelf = JSON.stringify(this.bookShelf);
+  localStorage.setItem("overStockShelf", tempShelf);
+};
+
+Library.prototype.get = function(){
+  var returnTray = JSON.parse(localStorage.getItem("overStockShelf"));
+
+  for (var i = 0; returnTray.length > i; i++){
+    var dateHolder = returnTray[i].pubDate;
+    returnTray[i].pubDate = new Date(dateHolder);
+    // console.log("tray date loop: " + returnTray[i].pubDate);
+  }
+  // console.log("get ran");
+  this.bookShelf = returnTray;
+  return this.bookShelf;
+};
+
+
+
 
 // VVVVVVVVVVVVVVVVVVVVVVVVVVVVV some custome stuff VVVVVVVVVVVVVVVVVVVVVVVVVVVVV
 // dont run this, its just for  (unless you like to bork stuff)
@@ -179,7 +202,7 @@ Library.prototype.nukeLibrary = function (){
   var r = confirm("Are you sure you want to Nuke the entire Library?");
   if (r === true){
     this.bookShelf = [];
-    alert("You Borked It!");
+    alert("You Borked It! \n Edam tuum anima!");
   } else { alert("Disaster Averted!");}
   return console.log("You rand a command that you shouldn't have.");
 };
@@ -188,11 +211,12 @@ Library.prototype.fireAutoLoad = function (){
   return console.log("autoload success");
 };
 //^^^^^^^^^^^^^^^^^^^^^^^^^^^^some custome stuff ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
+// for listning to changes .. ... .. . ... set get methods, run on DOMContentLoaded, not much for watching and persist
 
 
 
 //VVVVV takes a fraction of a second to load VVVVV ====> debuging HELL!
 document.addEventListener("DOMContentLoaded", function(e){
   window.gLibrary = new Library();
+  gLibrary.fireAutoLoad();
 });

@@ -3,7 +3,7 @@ function Book(title, author, numPages, pubDate){
   this.author = author;
   this.numPages = numPages;
   this.pubDate = pubDate;
-};
+}
 
 
 //Purpose: Takes in an object that can have some or all of the following
@@ -18,7 +18,7 @@ Book.prototype.editBook = function(oBook){
     this.title = tTitle;
     this.author = tAuth;
     this.numPages = tNum;
-  } else {console.log("Invalid value type, check that title and author are strings and page number is a number.")}
+  } else {console.log("Invalid value type, check that title and author are strings and page number is a number.");}
   return this;
 };
 

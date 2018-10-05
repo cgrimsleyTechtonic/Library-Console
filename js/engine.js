@@ -182,22 +182,18 @@ Library.prototype.store = function(){
 
 Library.prototype.get = function(){
   var returnTray = JSON.parse(localStorage.getItem("overStockShelf"));
-
   for (var i = 0; returnTray.length > i; i++){
-    var dateHolder = returnTray[i].pubDate;
-    returnTray[i].pubDate = new Date(dateHolder);
-    // console.log("tray date loop: " + returnTray[i].pubDate);
+    this.addBook(new Book(returnTray[i]));
   }
-  // console.log("get ran");
-  this.bookShelf = returnTray;
   return this.bookShelf;
 };
-
+// need to automate loading .. ..
+// also dont try to load if no library exists in localStorage, need logic to mitigate this.
 
 
 
 // VVVVVVVVVVVVVVVVVVVVVVVVVVVVV some custome stuff VVVVVVVVVVVVVVVVVVVVVVVVVVVVV
-// dont run this, its just for  (unless you like to bork stuff)
+// bork it
 Library.prototype.nukeLibrary = function (){
   var r = confirm("Are you sure you want to Nuke the entire Library?");
   if (r === true){
@@ -206,6 +202,7 @@ Library.prototype.nukeLibrary = function (){
   } else { alert("Disaster Averted!");}
   return console.log("You rand a command that you shouldn't have.");
 };
+//initiate laziness
 Library.prototype.fireAutoLoad = function (){
   this.addBooks(ringworld, fakebook2, fakebook3, fakebook1);
   return console.log("autoload success");

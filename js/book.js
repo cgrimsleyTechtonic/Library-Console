@@ -1,9 +1,19 @@
-function Book(title, author, numPages, pubDate){
-  this.title = title;
-  this.author = author;
-  this.numPages = numPages;
-  this.pubDate = pubDate;
+// function Book(title, author, numPages, pubDate){
+//   this.title = title;
+//   this.author = author;
+//   this.numPages = numPages;
+//   this.pubDate = pubDate;
+// }
+
+function Book(obj){
+  this.title = obj.title;
+  this.author = obj.author;
+  this.numPages = obj.numPages;
+  // need to fix the creation of a date object. broken somehow
+  //var d = new Date(obj.pubDate);
+  this.pubDate = obj.pubDate;
 }
+
 
 
 //Purpose: Takes in an object that can have some or all of the following
@@ -13,7 +23,7 @@ function Book(title, author, numPages, pubDate){
 Book.prototype.editBook = function(oBook){
   var tTitle = oBook.title;
   var tAuth = oBook.author;
-  var tNum = oBook.numberOfPages;
+  var tNum = oBook.numPages;
   if (typeof(tTitle) === "string" && typeof(tAuth) === "string" && typeof(tNum) === "number"){
     this.title = tTitle;
     this.author = tAuth;
@@ -36,7 +46,8 @@ Book.prototype.editBook = function(oBook){
 
 
 // vvvvvvvv preloaded books for testing vvvvvvv
-var fakebook1 = new Book("fakebook1", "fakeAuth1", 1, new Date("September 1, 1979"));
-var ringworld = new Book("RingWorld", "Larry Niven", 342, new Date("October 1, 1980"));
-var fakebook2 = new Book("fakebook2", "fakeAuth2", 2, new Date("November 1, 1981"));
-var fakebook3 = new Book("fakebook3", "fakeAuth2", 3, new Date("December 1, 1982"));
+var fakebook1 = new Book ({title: "fakebook1",author: "fakeAuth1",numPages: 1,pubDate: "September 1, 1979"});
+var ringworld = new Book ({title: "RingWorld",author: "Larry Niven",numPages: 342,pubDate: "October 1, 1980"});
+var fakebook2 = new Book ({title: "fakebook2",author: "fakeAuth2",numPages: 2,pubDate: "November 1, 1981"});
+var fakebook3 = new Book ({title: "fakebook3",author: "fakeAuth2",numPages: 3,pubDate: "December 1, 1982"});
+var seeSpotRun = new Book({title:"See Spot Run",author:"Jane",numPages:200,pubDate:2005});

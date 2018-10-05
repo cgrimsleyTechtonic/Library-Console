@@ -70,6 +70,7 @@ Library.prototype.removeBookByAuthor = function (authorName){
   }
 };
 
+// **************** Should check if any books exist in the first place
 Library.prototype.getRandomBook = function (){
   function getRandomInt(max) {
     return Math.floor(Math.random() * Math.floor(max));
@@ -126,6 +127,8 @@ Library.prototype.getBookByAuthor = function (authorName){
 
 //Takes multiple books, in the form of an array of book objects, and adds the objects to your books array
 //return number of books successfully added, 0 if no books were added
+
+// get away from using args
 Library.prototype.addBooks = function (books){
   var booksAdded = 0;
   for (var i = 0; i < arguments.length; i++){
@@ -184,11 +187,11 @@ Library.prototype.get = function(){
   for (var i = 0; returnTray.length > i; i++){
     this.addBook(new Book(returnTray[i]));
   }
-  console.log("Library loaded.");
+  console.log("Library loaded. \nBooks in Library: " + this.bookShelf.length);
   return this.bookShelf;
 };
 // need to automate loading .. ..
-// also dont try to load if no library exists in localStorage, need logic to mitigate this.
+// ******** also dont try to load if no library exists in localStorage, need logic to mitigate this.
 
 
 
@@ -208,7 +211,7 @@ Library.prototype.fireAutoLoad = function (){
   return console.log("autoload success");
 };
 //^^^^^^^^^^^^^^^^^^^^^^^^^^^^some custome stuff ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-//NOTES: should normalize text in addbook with tolower method, other areas may require this as well.
+//NOTES: should normalize text in addbook with tolowercase method, other areas may require this as well.
 //
 
 
@@ -220,3 +223,11 @@ document.addEventListener("DOMContentLoaded", function(e){
   //need to test if their is a library that exists before loading. if not should call my fireAutoLoad
   gLibrary.get();
 });
+
+
+
+
+//Brett Goers feedback;
+//Refactor:
+// finish implementing localstorage to load it in when dom is ready
+// remove arguments from addBooks method and instead use the books array parameter

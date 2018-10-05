@@ -20,10 +20,20 @@ function Book(obj){
 // fields {title:”string” , author:”string”, numberOfPages: number} and edits the Book with the values provided
 //Return: returns the edited book object
 
+
+// **** req a for loop to ensure the ttle being added does not match an existing one.
+// need to call save function once edited.
 Book.prototype.editBook = function(oBook){
   var tTitle = oBook.title;
   var tAuth = oBook.author;
   var tNum = oBook.numPages;
+  //hard coded gLibrary, need to fix later
+  //for loop does not work correctly yet *****************
+  for (var i = 0; i < gLibrary.bookShelf; i++){
+    if (tTitle.tolowercase() === gLibrary.bookShelf.title.tolowercase()){
+      console.log("Title already exists.");
+    }
+  }
   if (typeof(tTitle) === "string" && typeof(tAuth) === "string" && typeof(tNum) === "number"){
     this.title = tTitle;
     this.author = tAuth;

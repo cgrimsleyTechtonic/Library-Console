@@ -17,6 +17,7 @@ Library.prototype.addBook = function (book){
   if (!bookBool){
     this.bookShelf.push(book);
     console.log("bookchk true, " + book.title + " pushed."); // book.title only works because it was pushed. probably not optimal, should correct in the future.
+    this.store();
     return true;
   } else {
     console.log("bookchk false, book not pushed.");
@@ -36,6 +37,7 @@ Library.prototype.removeBookByTitle = function (title){
   } else {
     this.bookShelf.splice(index,1);
     console.log(title + " removed. index: " + index);
+    this.store();
     return true;
   }
 };
@@ -70,6 +72,7 @@ Library.prototype.removeBookByAuthor = function (authorName){
       findAuth();
     }
     console.log(booksRemoved + " Book(s) by " +authorName+ " Removed.");
+    this.store();
     return true;
   }
 };
@@ -180,6 +183,7 @@ Library.prototype.getRandomAuthorName = function (){
 Library.prototype.store = function(){
   var tempShelf = JSON.stringify(this.bookShelf);
   localStorage.setItem("overStockShelf", tempShelf);
+  // console.log("saved");
 };
 
 Library.prototype.get = function(){
@@ -187,6 +191,7 @@ Library.prototype.get = function(){
   for (var i = 0; returnTray.length > i; i++){
     this.addBook(new Book(returnTray[i]));
   }
+  console.log("Library loaded.");
   return this.bookShelf;
 };
 // need to automate loading .. ..
@@ -197,7 +202,7 @@ Library.prototype.get = function(){
 // VVVVVVVVVVVVVVVVVVVVVVVVVVVVV some custome stuff VVVVVVVVVVVVVVVVVVVVVVVVVVVVV
 // bork it
 Library.prototype.nukeLibrary = function (){
-  var r = confirm("Are you sure you want to Nuke the entire Library?");
+  var r = confirm("Are you sure you want to Nuke the entire Library? \n Does not affect localStorage.");
   if (r === true){
     this.bookShelf = [];
     alert("You Borked It! \n Edam tuum anima!");
@@ -210,12 +215,13 @@ Library.prototype.fireAutoLoad = function (){
   return console.log("autoload success");
 };
 //^^^^^^^^^^^^^^^^^^^^^^^^^^^^some custome stuff ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-// for listning to changes .. ... .. . ... set get methods, run on DOMContentLoaded, not much for watching and persist
+//
 
 
 
 //VVVVV takes a fraction of a second to load VVVVV ====> debuging HELL!
 document.addEventListener("DOMContentLoaded", function(e){
   window.gLibrary = new Library();
-  gLibrary.fireAutoLoad();
+  // gLibrary.fireAutoLoad();
+  gLibrary.get();
 });

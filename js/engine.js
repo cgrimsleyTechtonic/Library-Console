@@ -93,6 +93,7 @@ Library.prototype.getRandomBook = function (){
 //returns an array of book objects if you find books with matching titles, empty array if no books are found.
 Library.prototype.getBookByTitle = function (title){
   // dropped /g for now, it searches globally (finds all matches insteadof 1) but im iterating with a loop so may not need it.
+  // *** find out if reg ex is more resource intensive than standard array methods that perform a similar function.
   var str = new RegExp(title,"i");
   // console.log("var: " + str);
   var tempArray = [];
@@ -225,7 +226,16 @@ document.addEventListener("DOMContentLoaded", function(e){
 });
 
 
+//TODOLIST
+// .tolowercase for most key calls
+// check for library instance before loading.
+// on editbook, check if the title your changing to already exists.
+// remove args from addbooks method and use the books array parameter
+// fix hard coded glibrary in editbook function
+// fix remove book by auth _self reference hack
+//
 
+// refine comments
 
 //Brett Goers feedback;
 //Refactor:

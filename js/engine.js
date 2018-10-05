@@ -2,11 +2,11 @@ function Library(){
   this.bookShelf = new Array();
 }
 
-//grabs fist full of hair
+
 
 
 Library.prototype.addBook = function (book){
-  //rips hair out
+
   var bookBool;
   function bookChk(b){
     return b === book;
@@ -16,15 +16,12 @@ Library.prototype.addBook = function (book){
   // console.log("bookchck started");
   if (!bookBool){
     this.bookShelf.push(book);
-    console.log("bookchk true, " + book.title + " pushed."); // kinda ghetto, book.title only works because it was pushed. probably not optimal, should correct in the future.
+    console.log("bookchk true, " + book.title + " pushed."); // book.title only works because it was pushed. probably not optimal, should correct in the future.
     return true;
   } else {
     console.log("bookchk false, book not pushed.");
     return false;
   }
-  //invests in bosley
-  //waits for hair to grow back
-  //      #profit
 };
 
 // syntatical book-b-gone
@@ -146,11 +143,16 @@ Library.prototype.addBooks = function (books){
 
 //Find the distinct authors’ (single instance of each author) names from all books in your library
 //array of strings the names of all distinct authors, empty array if no books exist or if no authors exist
+// i dont understand what i did here as well as i should. I probably underutilized the .some method.
 Library.prototype.getAuthors = function (){
   var tempArray = [];
   var i;
   for (i = 0; i < this.bookShelf.length; i++){
     var tempAuth = this.bookShelf[i].author;
+    // Checks if temparray has the author already, if so it skips to the next auth in the loop.
+    // if the auth is found in the temp array, it returns true and is modified to evaluate false with a !
+    // so that the author is not pushed. If no auth match is found it evals to false which is flipped to true
+    // by a ! which pushes the auth.
     if (!tempArray.some(function(a){return a === tempAuth;})){
       tempArray.push(tempAuth);
     }
@@ -204,7 +206,7 @@ Library.prototype.nukeLibrary = function (){
 };
 //initiate laziness
 Library.prototype.fireAutoLoad = function (){
-  this.addBooks(ringworld, fakebook2, fakebook3, fakebook1);
+  this.addBooks(ringworld, fakebook2, fakebook3, fakebook1,seeSpotRun);
   return console.log("autoload success");
 };
 //^^^^^^^^^^^^^^^^^^^^^^^^^^^^some custome stuff ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

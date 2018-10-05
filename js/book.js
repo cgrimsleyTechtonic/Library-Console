@@ -1,3 +1,4 @@
+// obsolete ......
 // function Book(title, author, numPages, pubDate){
 //   this.title = title;
 //   this.author = author;
@@ -5,13 +6,12 @@
 //   this.pubDate = pubDate;
 // }
 
+// most bestest, more betters
 function Book(obj){
   this.title = obj.title;
   this.author = obj.author;
   this.numPages = obj.numPages;
-  // need to fix the creation of a date object. broken somehow
-  //var d = new Date(obj.pubDate);
-  this.pubDate = obj.pubDate;
+  this.pubDate = new Date(obj.pubDate);
 }
 
 

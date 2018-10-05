@@ -17,6 +17,7 @@ Library.prototype.addBook = function (book){
   if (!bookBool){
     this.bookShelf.push(book);
     console.log("bookchk true, " + book.title + " pushed."); // book.title only works because it was pushed. probably not optimal, should correct in the future.
+    // need an elseif statement to run this.store only if not from a localStorage. will require a second arg in addbook as a bool to determine origin of the addbook request.
     this.store();
     return true;
   } else {
@@ -82,10 +83,10 @@ Library.prototype.getRandomBook = function (){
     return Math.floor(Math.random() * Math.floor(max));
   }
   var bookCnt = this.bookShelf.length;
-  // console.log("book count: " + bookCnt);
+  console.log("book count: " + bookCnt);
   if (bookCnt > 1){
     var bookLottery = getRandomInt(bookCnt);
-    // console.log("Book Lottery winnner: " + bookLottery);
+    console.log("Book Lottery winnner: " + bookLottery);
     return this.bookShelf[bookLottery];
   } else{
     return null;

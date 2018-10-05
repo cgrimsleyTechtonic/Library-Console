@@ -6,24 +6,16 @@ function Library(){
 
 
 Library.prototype.addBook = function (book){
-
-  var bookBool;
-  function bookChk(b){
-    return b === book;
-  }
-  // not even sure if this results in a bool but it works
-  bookBool = this.bookShelf.find(bookChk);
-  // console.log("bookchck started");
-  if (!bookBool){
+  for(var i=0; i<this.bookShelf.length; i++) {
+      if(this.bookShelf[i].title === book.title){
+        console.log('book not added');
+        return false;
+      }
+    }
     this.bookShelf.push(book);
-    console.log("bookchk true, " + book.title + " pushed."); // book.title only works because it was pushed. probably not optimal, should correct in the future.
-    // need an elseif statement to run this.store only if not from a localStorage. will require a second arg in addbook as a bool to determine origin of the addbook request.
+    console.log('book added');
     this.store();
     return true;
-  } else {
-    console.log("bookchk false, book not pushed.");
-    return false;
-  }
 };
 
 // syntatical book-b-gone
@@ -216,6 +208,7 @@ Library.prototype.fireAutoLoad = function (){
   return console.log("autoload success");
 };
 //^^^^^^^^^^^^^^^^^^^^^^^^^^^^some custome stuff ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+//NOTES: should normalize text in addbook with tolower method, other areas may require this as well.
 //
 
 
@@ -224,5 +217,6 @@ Library.prototype.fireAutoLoad = function (){
 document.addEventListener("DOMContentLoaded", function(e){
   window.gLibrary = new Library();
   // gLibrary.fireAutoLoad();
+  //need to test if their is a library that exists before loading. if not should call my fireAutoLoad
   gLibrary.get();
 });

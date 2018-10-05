@@ -44,7 +44,7 @@ Book.prototype.editBook = function(oBook){
 //   console.log(this.title);
 // }
 
-
+// demo console log: gLibrary.addBook({title: "fakebook5",author: "fakeAuth4",numPages: 1,pubDate: "September 1, 1977"})
 // vvvvvvvv preloaded books for testing vvvvvvv
 var fakebook1 = new Book ({title: "fakebook1",author: "fakeAuth1",numPages: 1,pubDate: "September 1, 1979"});
 var ringworld = new Book ({title: "RingWorld",author: "Larry Niven",numPages: 342,pubDate: "October 1, 1980"});

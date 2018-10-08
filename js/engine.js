@@ -2,9 +2,6 @@ function Library(){
   this.bookShelf = new Array();
 }
 
-
-
-
 Library.prototype.addBook = function (book){
   for(var i=0; i<this.bookShelf.length; i++) {
       if(this.bookShelf[i].title === book.title){
@@ -35,14 +32,12 @@ Library.prototype.removeBookByTitle = function (title){
   }
 };
 
-
-
 Library.prototype.removeBookByAuthor = function (authorName){
   var index;
   var booksRemoved = 0;
-  //VVV hacky way VVV used to correct context for the findauth fx
+  //VVV hacky way VVV used to correct context for the findauth fx (should try to get away from using this)
   var _self = this;
-// find auth function
+  // find auth function
   function findAuth(){
     index = _self.bookShelf.findIndex(function(b){
       // console.log("rmvBbyAuth mini function ran on: " + authorName);
@@ -51,7 +46,6 @@ Library.prototype.removeBookByAuthor = function (authorName){
   }
   // called auth fx for first time
   findAuth();
-  // did the logic backwards on this, really more a style pref than anything.
   if (index === -1){
     console.log(authorName + " was not found. index: " + index);
     return false;
@@ -70,14 +64,13 @@ Library.prototype.removeBookByAuthor = function (authorName){
   }
 };
 
-// **************** Should check if any books exist in the first place
 Library.prototype.getRandomBook = function (){
   function getRandomInt(max) {
     return Math.floor(Math.random() * Math.floor(max));
   }
   var bookCnt = this.bookShelf.length;
   console.log("book count: " + bookCnt);
-  if (bookCnt > 1){
+  if (bookCnt > 0){
     var bookLottery = getRandomInt(bookCnt);
     console.log("Book Lottery winnner: " + bookLottery);
     return this.bookShelf[bookLottery];
@@ -86,10 +79,7 @@ Library.prototype.getRandomBook = function (){
   }
 };
 
-
-
-
-//retrun all books that completely or partially match the string title passed into the function (indexof or regexp would help here)
+//return all books that completely or partially match the string title passed into the function (indexof or regexp would help here)
 //returns an array of book objects if you find books with matching titles, empty array if no books are found.
 Library.prototype.getBookByTitle = function (title){
   // dropped /g for now, it searches globally (finds all matches insteadof 1) but im iterating with a loop so may not need it.
@@ -97,7 +87,6 @@ Library.prototype.getBookByTitle = function (title){
   var str = new RegExp(title,"i");
   // console.log("var: " + str);
   var tempArray = [];
-
   for (var i=0; i < this.bookShelf.length; i++ ){
     var arrValueToSearch = this.bookShelf[i].title;
     // console.log(arrValueToSearch);
@@ -115,7 +104,6 @@ Library.prototype.getBookByTitle = function (title){
 Library.prototype.getBookByAuthor = function (authorName){
   var str = new RegExp(authorName,"i");
   var tempArray = [];
-  // #winning #tigerblood
   for (var i=0; i < this.bookShelf.length; i++ ){
     var arrValueToSearch = this.bookShelf[i].author;
     var arrValueToReturn = this.bookShelf[i].title;
@@ -129,11 +117,11 @@ Library.prototype.getBookByAuthor = function (authorName){
 //Takes multiple books, in the form of an array of book objects, and adds the objects to your books array
 //return number of books successfully added, 0 if no books were added
 
-// get away from using args
+// get away from using args *********
 Library.prototype.addBooks = function (books){
   var booksAdded = 0;
-  for (var i = 0; i < arguments.length; i++){
-    if (this.addBook(arguments[i])){
+  for (var i = 0; i < books.length; i++){
+    if (this.addBook(books[i])){
       booksAdded ++;
     }
   }
@@ -143,7 +131,6 @@ Library.prototype.addBooks = function (books){
 
 //Find the distinct authors’ (single instance of each author) names from all books in your library
 //array of strings the names of all distinct authors, empty array if no books exist or if no authors exist
-// i dont understand what i did here as well as i should. I probably underutilized the .some method.
 Library.prototype.getAuthors = function (){
   var tempArray = [];
   var i;
@@ -177,12 +164,13 @@ Library.prototype.getRandomAuthorName = function (){
 };
 
 // VVVVVVVVVVVVVVVVVVVVVVVVVVVVV helper stuffs VVVVVVVVVVVVVVVVVVVVVVVVVVVVV
+// store to localStorage
 Library.prototype.store = function(){
   var tempShelf = JSON.stringify(this.bookShelf);
   localStorage.setItem("overStockShelf", tempShelf);
   // console.log("saved");
 };
-
+// recover localStorage
 Library.prototype.get = function(){
   var returnTray = JSON.parse(localStorage.getItem("overStockShelf"));
   for (var i = 0; returnTray.length > i; i++){
@@ -191,13 +179,18 @@ Library.prototype.get = function(){
   console.log("Library loaded. \nBooks in Library: " + this.bookShelf.length);
   return this.bookShelf;
 };
-// need to automate loading .. ..
-// ******** also dont try to load if no library exists in localStorage, need logic to mitigate this.
 
-
+// bork localStorage
+Library.prototype.borkStorage = function(){
+  var r = confirm("Continue with localStorage borkening?");
+  if (r){
+    localStorage.clear("overStockShelf");
+    alert("Successfully borked localStorage.");
+  }
+};
 
 // VVVVVVVVVVVVVVVVVVVVVVVVVVVVV some custome stuff VVVVVVVVVVVVVVVVVVVVVVVVVVVVV
-// bork it
+// bork library, localStorage untouched.
 Library.prototype.nukeLibrary = function (){
   var r = confirm("Are you sure you want to Nuke the entire Library? \n Does not affect localStorage.");
   if (r === true){
@@ -215,22 +208,18 @@ Library.prototype.fireAutoLoad = function (){
 //NOTES: should normalize text in addbook with tolowercase method, other areas may require this as well.
 //
 
-
-
-//VVVVV takes a fraction of a second to load VVVVV ====> debuging HELL!
 document.addEventListener("DOMContentLoaded", function(e){
   window.gLibrary = new Library();
-  // gLibrary.fireAutoLoad();
-  //need to test if their is a library that exists before loading. if not should call my fireAutoLoad
-  gLibrary.get();
+  //checks if localStorage is empty, if so it wont load.
+  if (localStorage.getItem("overStockShelf")){
+    gLibrary.get();
+  }
 });
 
 
 //TODOLIST
 // .tolowercase for most key calls
-// check for library instance before loading.
 // on editbook, check if the title your changing to already exists.
-// remove args from addbooks method and use the books array parameter
 // fix hard coded glibrary in editbook function
 // fix remove book by auth _self reference hack
 //
@@ -239,5 +228,5 @@ document.addEventListener("DOMContentLoaded", function(e){
 
 //Brett Goers feedback;
 //Refactor:
-// finish implementing localstorage to load it in when dom is ready
-// remove arguments from addBooks method and instead use the books array parameter
+// finish implementing localstorage to load it in when dom is ready *****(done)
+// remove arguments from addBooks method and instead use the books array parameter *****(i think i fixed it, at least i dont think i borked it, also need to ask why using args is bad.)

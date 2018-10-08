@@ -29,16 +29,28 @@ Book.prototype.editBook = function(oBook){
   var tNum = oBook.numPages;
   //hard coded gLibrary, need to fix later
   //for loop does not work correctly yet *****************
-  for (var i = 0; i < gLibrary.bookShelf; i++){
-    if (tTitle.tolowercase() === gLibrary.bookShelf.title.tolowercase()){
-      console.log("Title already exists.");
+  //Incorrect: attempts to assign to books  being checked, currently backwards. dont correct untill assignment is fixed.
+  for (var i = 0; i < gLibrary.bookShelf.length; i++){
+    if (tTitle.toLowerCase() === gLibrary.bookShelf[i].title.toLowerCase()){
+      return console.log("Title already exists.");
+      // a for loop may not be appropriate for this. might store in an array then use a method like .some to check for copies.
+    } else {
+      if (typeof(tTitle) === "string" && typeof(tAuth) === "string" && typeof(tNum) === "number"){
+        // this is backwards, also dont change yet. the only thing stoping a major fup.
+        this.title = tTitle;
+        this.author = tAuth;
+        this.numPages = tNum;
+        console.log(tTitle + " assigned.")
+
+      } else {
+        console.log("Invalid value type, check that title and author are strings and page number is a number.");
+      }
+      console.log(tTitle + " = " + gLibrary.bookShelf[i].title);
+
     }
   }
-  if (typeof(tTitle) === "string" && typeof(tAuth) === "string" && typeof(tNum) === "number"){
-    this.title = tTitle;
-    this.author = tAuth;
-    this.numPages = tNum;
-  } else {console.log("Invalid value type, check that title and author are strings and page number is a number.");}
+  gLibrary.store();
+  console.log("stored");
   return this;
 };
 
